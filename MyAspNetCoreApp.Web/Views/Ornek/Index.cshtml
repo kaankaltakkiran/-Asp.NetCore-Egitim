@@ -1,0 +1,38 @@
+﻿@using MyAspNetCoreApp.Web.Controllers
+@{
+	ViewData["Title"] = "Index";
+	var alert = "Bu Uyaru Mesajıdır";
+}
+
+<h1>Örnek Controller Index Sayfası Oluşturuldu</h1>
+
+@{
+	var name = ViewBag.name;
+	<p>@name</p>
+}
+<p>@name</p>
+
+<p>@ViewBag.name</p>
+<p>@ViewData["Age"]</p>
+
+<h1>İsimler</h1>
+@foreach (var item in ViewData["Name"] as List<string>)
+{
+	<p>@item</p>
+}
+
+@model List<Product2>;
+@foreach (var nesne in Model)
+{
+	<p>@nesne.Id- @nesne.Ad</p>
+}
+<div>@DateTime.Now.ToShortDateString();</div>
+@{
+	var date = DateTime.Now.ToShortDateString();
+	@:Bugünün Tarihi:@date
+	<text>@date</text>
+	<text>@alert</text>
+}
+<partial name="_MenuPartialWiew" />
+
+

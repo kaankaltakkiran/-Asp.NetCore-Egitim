@@ -1,0 +1,27 @@
+﻿@model List<ProductListComponentViewModel>
+
+	@*asp-controller hangi controllere gitcek
+	asp-action hangi cshtml sayfasına gitcek*@
+<a class="btn btn-primary" asp-controller="Products" asp-action="Index">Ürünlere Git</a>
+
+<table class="table table-danger  table-striped">
+
+	<thead>
+		<tr>
+
+			<th>İsim</th>
+			<th>Açıklama</th>
+
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>@item.Name</td>
+				<td>@item.Description</td>
+			</tr>
+		}
+
+	</tbody>
+</table>

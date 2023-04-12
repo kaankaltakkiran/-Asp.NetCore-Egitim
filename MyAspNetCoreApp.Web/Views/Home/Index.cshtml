@@ -1,0 +1,46 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+	//Veri Oluşturma
+	var product = new Product() { Id = 1, Name = "Kalem 1", Price = 100, Stock = 500 };
+}
+
+
+<!--Css Kodu Yazma-->
+@section Css{
+	
+}
+
+
+<!--JavaScript Kodu Yazma-->
+@section Scripts{
+	
+}
+
+@*partial view data*@
+<div class="row">
+	<div class="col-md-4">
+		@*partial tanımlama*@
+		<partial name="~/PartialViews/_ProductListPartialView.cshtml" model=" @ViewBag.ProductListPartialViewModel" />
+	</div>
+	<div class="col-md-4">
+		@*View Component İle*@
+		@*@await Component.InvokeAsync("ProductList",new {type=1})*@
+		@*Tag helperle yollama*@
+		<vc:product-list type="1"></vc:product-list>
+	</div>
+	<div class="col-md-4">
+		@*custom tag helper*@
+		<italic>Asp.Net Core</italic>
+		@*custom tag helper*@
+		<product-show product="@product"></product-show>
+	
+	</div>
+</div>
+<div>
+	@*resim örneği*@
+	<img src="images/car.jpg" />
+	<thumbnail image-src="images/car.jpg"></thumbnail>
+</div>
+
+
+

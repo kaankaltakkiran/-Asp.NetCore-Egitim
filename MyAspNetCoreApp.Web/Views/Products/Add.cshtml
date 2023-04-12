@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewData["Title"] = "Add";
+}
+@*tip kontorüleri(asp-for)*@
+@model ProductViewModel
+<h1>Ürün Ekleme</h1>
+@*Mesajları toplu göstermme*@
+<div asp-validation-summary="ModelOnly"></div>
+
+@*Kulanıcıdan veri alma*@
+<form asp-controller="Products" asp-action="Add" method="post">
+
+     <div class="mb-3">
+         @*aspfor yazıya tıklayınca da seçilme işlemini yapıyor*@
+    <label asp-for="Name" class="form-label">Ürün İsmi</label>
+        <input class="form-control" asp-for="Name">
+
+        <span class="text-danger" asp-validation-for="Name"></span>
+  </div>
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label">Ürün Fiyatı</label>
+        <input class="form-control" asp-for="Price">
+
+        <span class="text-danger" asp-validation-for="Price"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Stock" class="form-label">Ürün Stock</label>
+        <input type="number" class="form-control" asp-for="Stock">
+
+        <span class="text-danger" asp-validation-for="Stock"></span>
+    </div>
+
+    <div class="mb-3">
+    @*    <label asp-for="Color" class="form-label">Ürün Rengi</label>
+        <input class="form-control" asp-for="Color">*@
+
+        <select class="form-select" asp-for="Color" asp-items="@ViewBag.ColorSelect">
+            <option value="">Renk Seçiniz</option>
+  
+        </select>
+        @* Hata mesajı*@
+        <span class="text-danger" asp-validation-for="Color"></span>
+    </div>
+
+    <div class="form-check">
+   <input class="form-check-input" asp-for="IsPublish">
+        <label class="form-check-label" asp-for="IsPublish">Yayınlansın mı ?</label>    
+        </div>
+
+   @*     ürün kaç ay yayınlasın*@
+    <div class="mb-3 mt-3">
+        <span>Kaç Ay Satışta Kalacak?</span>
+    @foreach (var item in ViewBag.Expire as Dictionary<string, int>)
+    {
+        <div class="form-check">
+            <input class="form-check-input" type="radio" id="@(item.Value)Expire" asp-for="Expire" value="@item.Value">
+                <label class="form-check-label" asp-for="Expire" for="@(item.Value)Expire"> 
+                @item.Key
+            </label>
+              
+        </div>
+    }
+        @* Hata mesajı*@
+        <span class="text-danger" asp-validation-for="Expire"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <textarea asp-for="Description" class="form-control" placeholder="Write Description"></textarea>
+        <label asp-for="Description">Write Description</label>
+        @* Hata mesajı*@
+        <span class="text-danger" asp-validation-for="Description"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PublishDate" class="form-label">Date</label>
+        <input class="form-control" asp-for="PublishDate">
+        @* Hata mesajı*@
+        <span class="text-danger" asp-validation-for="PublishDate"></span>
+    </div>
+ 
+    @* Hata mesajı*@
+    <button type="submit" class="btn btn-primary">Ürün Kaydet</button>
+   
+</form>
+
+ @section Scripts
+ {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+ }

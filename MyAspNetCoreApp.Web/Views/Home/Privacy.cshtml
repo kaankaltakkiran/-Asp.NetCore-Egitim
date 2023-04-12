@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+@*partial view data*@
+<div class="row">
+	<div class="col-md-4">
+		@*partial tanımlama*@
+		<partial name="~/PartialViews/_ProductListPartialView.cshtml" model=" @ViewBag.ProductListPartialViewModel" />
+	</div>
+	<div class="col-md-4">
+		@*View Component İle*@
+		@*@await Component.InvokeAsync("ProductList",new {type=2})*@
+		@*Tag helperle yollama*@
+		<vc:product-list type="2"></vc:product-list>
+	</div>
+</div>

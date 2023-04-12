@@ -1,0 +1,20 @@
+﻿
+@{
+    //Laoyut Seçmedğimiz İçin Null
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NoLayout</title>
+</head>
+<body>
+    <div>Bu Sayfada Laoyut Yok</div>
+    <partial name="_MenuPartialWiew" />
+    @await Html.PartialAsync("_MenuPartialWiew")
+    @Html.Partial("_MenuPartialWiew")
+</body>
+</html>
