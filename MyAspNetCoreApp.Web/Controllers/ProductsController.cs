@@ -69,10 +69,17 @@ namespace MyAspNetCoreApp.Web.Controllers
 		}
         public IActionResult Pages(int page,int pageSize)
         {
+            //page=1 pagesize=3 ilk 3 kayıt
+            //page= pagesize=3 ikinci 3 kayıt
+
+            //Skip kaçıcından başlama
+            //Take Ne kadar alcağı
+            var products = _context.Products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
             ViewBag.page=page;
             ViewBag.PageSize = pageSize;    
-            return View();
-        }
+            return View(_mapper.Map<List<ProductViewModel>>(products));
+        }   
         public IActionResult GetById(int productid)
         {
             var product = _context.Products.Find(productid);

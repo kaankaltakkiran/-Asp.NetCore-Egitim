@@ -4,7 +4,57 @@
 }
 
 <h1>Pages</h1>
-
+@model List<ProductViewModel>
 <h2>page: @ViewBag.page</h2>
 <h2>pageSize: @ViewBag.pageSize</h2>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Color</th>
+            <th>Publish</th>
+            <th>Exprie(Month)</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                <td>@item.Stock</td>
+                <td>@item.Color</td>
+                <td>
+                    @(item.IsPublish ? "Evet" : "Hayır")
+                </td>
+                <td>@item.Expire</td>
+                <td>
+                    @if (item.Description.Length > 20)
+                    {
+                        @item.Description.Substring(0,20) <text>...</text>
+                    }
+                    else
+                    {
+                        @item.Description
+                    }
+
+
+                </td>
+
+                <!--Yapılıacak İşelmler Ayar Yeri(remove)-->
+                <td> <a asp-controller="products" asp-action="remove" asp-route-id="@item.Id">Delete</a></td>
+                <!--Yapılıacak İşelmler Ayar Yeri(update)-->
+                <td> <a asp-controller="products" asp-action="update" asp-route-id="@item.Id">Update</a></td>
+                <!--Tekil Ürün Sayfası-->
+                <td> <a asp-controller="products" asp-action="GetById" asp-route-productid="@item.Id">Ürün Sayfasına Git</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

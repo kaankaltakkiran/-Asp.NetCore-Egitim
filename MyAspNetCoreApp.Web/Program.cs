@@ -42,14 +42,16 @@ app.UseRouting();
 
 app.UseAuthorization();
 //conventional example Routing tanýmlama
+//Özellerde gerek yok
+//Genel tanýmla
 app.MapControllerRoute(
     name: "productpages",
-    pattern: "{controller=products}/{action=pages}/{page}/{pageSize}");
+    pattern: "{controller}/{action}/{page}/{pageSize}");
 
 //conventional example
 app.MapControllerRoute(
     name: "productgetbyid",
-    pattern: "{controller=products}/{action=getbyid}/{productid}");
+    pattern: "{controller}/{action}/{productid}");
 
 app.MapControllerRoute(
     name: "default",
