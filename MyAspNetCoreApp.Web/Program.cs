@@ -41,9 +41,17 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+//conventional example Routing tanýmlama
+app.MapControllerRoute(
+    name: "productpages",
+    pattern: "{controller=products}/{action=pages}/{page}/{pageSize}");
+
+//conventional example
+app.MapControllerRoute(
+    name: "productgetbyid",
+    pattern: "{controller=products}/{action=getbyid}/{productid}");
 
 app.MapControllerRoute(
-    //conversilon routing
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 

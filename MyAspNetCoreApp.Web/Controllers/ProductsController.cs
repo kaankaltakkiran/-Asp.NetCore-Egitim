@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
@@ -66,9 +67,15 @@ namespace MyAspNetCoreApp.Web.Controllers
 			//Mapledik
 			return View(_mapper.Map<List<ProductViewModel>>(products));
 		}
-        public IActionResult GetById(int id)
+        public IActionResult Pages(int page,int pageSize)
         {
-            var product = _context.Products.Find(id);
+            ViewBag.page=page;
+            ViewBag.PageSize = pageSize;    
+            return View();
+        }
+        public IActionResult GetById(int productid)
+        {
+            var product = _context.Products.Find(productid);
             return View(_mapper.Map<ProductViewModel>(product));
         }
 		public IActionResult Remove(int id) {
