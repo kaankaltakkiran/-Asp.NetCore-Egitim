@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Models;
 using MyAspNetCoreApp.Web.ViewModels;
 using System.Diagnostics;
 
 namespace MyAspNetCoreApp.Web.Controllers
 {
+    [LogFilter]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
