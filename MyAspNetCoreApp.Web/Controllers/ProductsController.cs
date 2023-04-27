@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
 using MyAspNetCoreApp.Web.ViewModels;
@@ -82,6 +83,7 @@ namespace MyAspNetCoreApp.Web.Controllers
             ViewBag.PageSize = pageSize;    
             return View(_mapper.Map<List<ProductViewModel>>(products));
         }
+        [ServiceFilter(typeof(NotFoundFilter))]
         //Attribute Routing
         [Route("[controller]/[action]/{productid}",Name ="product")]
         //action=GetById

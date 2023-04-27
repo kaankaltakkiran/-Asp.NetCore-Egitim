@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
 using System.Reflection;
@@ -22,7 +23,8 @@ builder.Services.AddTransient<IHelper, Helper>();
 
 //Auto Mapper için
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
+//NotFoundFilter
+builder.Services.AddScoped<NotFoundFilter>();
 
 
 var app = builder.Build();
