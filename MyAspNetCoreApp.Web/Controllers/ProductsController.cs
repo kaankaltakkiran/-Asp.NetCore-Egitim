@@ -66,8 +66,13 @@ namespace MyAspNetCoreApp.Web.Controllers
 			//Mapledik
 			return View(_mapper.Map<List<ProductViewModel>>(products));
 		}
+        public IActionResult GetById(int id)
+        {
+            var product = _context.Products.Find(id);
+            return View(_mapper.Map<ProductViewModel>(product));
+        }
 		public IActionResult Remove(int id) {
-            //Primar key olan id al
+            //Primary key olan id al
             //_context.Products veritabanı demek
             var product = _context.Products.Find(id);
 			//

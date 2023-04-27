@@ -43,6 +43,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    //conversilon routing
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
