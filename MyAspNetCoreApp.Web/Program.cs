@@ -41,6 +41,15 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+//Asterisk ile oluþturma
+//Dinamik alan gelirse
+//Hep article sayfasý gelir
+app.MapControllerRoute(
+    name: "pages",
+    pattern: "blog/{*article}",
+    defaults: new { controller = "Blog", action = "Article" });
+
 //conventional example Routing tanýmlama
 //Özellerde gerek yok
 //Genel tanýmla
