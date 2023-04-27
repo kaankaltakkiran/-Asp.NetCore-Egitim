@@ -85,7 +85,7 @@ namespace MyAspNetCoreApp.Web.Controllers
         //Attribute Routing
         [Route("[controller]/[action]/{productid}")]
         //action=GetById
-        //controller olamasada olur
+        //controller olamasada olur 
         public IActionResult GetById(int productid)
         {
             var product = _context.Products.Find(productid);
