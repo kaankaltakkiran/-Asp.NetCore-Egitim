@@ -61,11 +61,11 @@
                 <!--Yapılıacak İşelmler Ayar Yeri(update)-->
                 <td> <a asp-controller="products" asp-action="update" asp-route-id="@item.Id">Update</a></td>
                 <!--Tekil Ürün Sayfası-->
-                <td> <a asp-controller="products" asp-action="GetById" asp-route-productid="@item.Id">Ürün Sayfasına Git</a></td>
+                <td> <a asp-route="product" asp-route-productid="@item.Id">Ürün Sayfasına Git</a></td>
         </tr>
     }
     </tbody>
 </table>
 
-<a asp-controller="products" asp-action="pages" asp-route-page=1 asp-route-pagesize=3>1. sayfadan 3 ürün ver</a>
-<a asp-controller="products" asp-action="pages" asp-route-page=2 asp-route-pagesize=3>2. sayfadan 3 ürün ver</a>
+<a asp-route="productpage" asp-route-page=1 asp-route-pagesize=3>1. sayfadan 3 ürün ver</a>
+<a asp-route="productpage" asp-route-page=2 asp-route-pagesize=3>2. sayfadan 3 ürün ver</a>

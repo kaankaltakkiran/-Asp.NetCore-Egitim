@@ -67,7 +67,7 @@ namespace MyAspNetCoreApp.Web.Controllers
 			//Mapledik
 			return View(_mapper.Map<List<ProductViewModel>>(products));
 		}
-        [Route("[controller]/[action]/{page}/{pageSize}")]
+        [Route("[controller]/[action]/{page}/{pageSize}",Name = "productpage")]
         //action=Pages
         public IActionResult Pages(int page,int pageSize)
         {
@@ -83,7 +83,7 @@ namespace MyAspNetCoreApp.Web.Controllers
             return View(_mapper.Map<List<ProductViewModel>>(products));
         }
         //Attribute Routing
-        [Route("[controller]/[action]/{productid}")]
+        [Route("[controller]/[action]/{productid}",Name ="product")]
         //action=GetById
         //controller olamasada olur 
         public IActionResult GetById(int productid)
