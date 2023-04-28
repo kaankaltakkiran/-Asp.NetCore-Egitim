@@ -57,6 +57,7 @@ namespace MyAspNetCoreApp.Web.Controllers
 			
 			}
 		}
+        [CacheResourceFilter]
 		public IActionResult Index()
 		{
 			
