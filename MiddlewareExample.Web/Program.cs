@@ -18,14 +18,27 @@ app.UseStaticFiles();
 
 //app.Use her zaman çalýþýr ama map belli olan çalýþýr
 //Orneke isteði gelirse çalýþ
-app.Map("/ornek", app =>
-{
+//app.Map("/ornek", app =>
+//{
+//    app.Run(async context =>
+//    {
+//        await context.Response.WriteAsync("Örnek Url ÝçinMiddleware");
+//    });
+//});
+
+//Name geçiyorsa çalýþtýr
+app.MapWhen(context => context.Request.Query.ContainsKey("name"), app=>{
+    app.Use(async (context, next) =>
+    {
+        await context.Response.WriteAsync("Before 1. Middleware\n");
+        await next();
+        await context.Response.WriteAsync("After 1. Middleware\n");
+    });
     app.Run(async context =>
     {
-        await context.Response.WriteAsync("Örnek Url ÝçinMiddleware");
+        await context.Response.WriteAsync("Terminal 3.Middleware\n");
     });
 });
-
 
 
 
