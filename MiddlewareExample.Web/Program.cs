@@ -15,26 +15,45 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-//Middleware
-app.Use(async (context, next) =>
+
+//app.Use her zaman çalýþýr ama map belli olan çalýþýr
+//Orneke isteði gelirse çalýþ
+app.Map("/ornek", app =>
 {
-    //Response yazý
-    await context.Response.WriteAsync("Before 1. Middleware\n");
-    await next();
-    await context.Response.WriteAsync("After 1. Middleware\n");
+    app.Run(async context =>
+    {
+        await context.Response.WriteAsync("Örnek Url ÝçinMiddleware");
+    });
 });
-app.Use(async (context, next) =>
-{
-    //Response yazý
-    await context.Response.WriteAsync("Before 2. Middleware\n");
-    await next();
-    await context.Response.WriteAsync("After 2. Middleware\n");
-});
-//Sonlandýrýcý
-app.Run(async context =>
-{
-    await context.Response.WriteAsync("Terminal 3.Middleware\n");
-});
+
+
+
+
+
+
+
+
+
+////Middleware
+//app.Use(async (context, next) =>
+//{
+//    //Response yazý
+//    await context.Response.WriteAsync("Before 1. Middleware\n");
+//    await next();
+//    await context.Response.WriteAsync("After 1. Middleware\n");
+//});
+//app.Use(async (context, next) =>
+//{
+//    //Response yazý
+//    await context.Response.WriteAsync("Before 2. Middleware\n");
+//    await next();
+//    await context.Response.WriteAsync("After 2. Middleware\n");
+//});
+////Sonlandýrýcý
+//app.Run(async context =>
+//{
+//    await context.Response.WriteAsync("Terminal 3.Middleware\n");
+//});
 app.UseRouting();
 
 app.UseAuthorization();
