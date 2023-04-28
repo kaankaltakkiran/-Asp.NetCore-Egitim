@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.VisualBasic;
 using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
@@ -16,9 +18,11 @@ namespace MyAspNetCoreApp.Web.Controllers
 	{
 		//
         private AppDbContext _context;
+        //File Upload
+        private readonly IFileProvider _fileProvider;
 
-		//
-		private readonly IMapper _mapper;
+        //
+        private readonly IMapper _mapper;
 
         //Kulancığımız işlemleri olan yeri ekledik
         private readonly ProductRepository _productRepository;
@@ -26,7 +30,7 @@ namespace MyAspNetCoreApp.Web.Controllers
 		//Constructor
 
 	
-		public ProductsController(AppDbContext context, IMapper mapper)
+		public ProductsController(AppDbContext context, IMapper mapper, IFileProvider fileProvider)
 		{
 			//DI container
 			//Dependency Injection Pattern
@@ -35,7 +39,7 @@ namespace MyAspNetCoreApp.Web.Controllers
             _context = context;
 			//
             _mapper = mapper;
-
+            _fileProvider = fileProvider;
             //Veritabına veri ekle
             //Her Seferinde Kaydetme
             //Data Yoksa kaydet
@@ -57,7 +61,7 @@ namespace MyAspNetCoreApp.Web.Controllers
 			
 			}
 		}
-        [CacheResourceFilter]
+        //[CacheResourceFilter]
 		public IActionResult Index()
 		{
 			
@@ -131,7 +135,7 @@ namespace MyAspNetCoreApp.Web.Controllers
 		//reqden verileri alma
 		[HttpPost]
 		//Veri Kaydetme
-		public IActionResult Add(ProductViewModel newProduct)
+		public  IActionResult Add(ProductViewModel newProduct)
 		{
             //model dışı hata mesajı
             //if (!newProduct.Name.StartsWith("A"))
@@ -142,31 +146,34 @@ namespace MyAspNetCoreApp.Web.Controllers
             //Alanlar dolu gelsin diye eklendi
 
             //radio ile ürün süresi
-            ViewBag.Expire = new Dictionary<string, int>()
-            {
-                {"1Ay",1 },
-                {"3Ay",3 },
-                {"6Ay",6 },
-                {"12Ay",12 }
-            };
-            //dropdown ile listeleme işlemi
-
-            ViewBag.ColorSelect = new SelectList(new List<ColorSelectList>()
-            {
-                new(){Data="Mavi",Value="Mavi"},
-                new(){Data="Kırmızı",Value="Kırmızı"},
-                new(){Data="Sarı",Value="Sarı"}
-				//value göster sonra dataları
-			}, "Value", "Data");
+         
 
             //Model başarıylıysa kaydet
             if (ModelState.IsValid)
 			{
 				try
-				{
+                {
+                    var product = _mapper.Map<Product>(newProduct);
+                    if (newProduct.Image!=null && newProduct.Image.Length > 0)
+                    {
+                        var root = _fileProvider.GetDirectoryContents("wwwroot");
+                        var images = root.First(x => x.Name == "images");
+
+                        var randomImageName = Guid.NewGuid() + Path.GetExtension(newProduct.Image.FileName);
+
+                        var path = Path.Combine(images.PhysicalPath, randomImageName);
+
+                        using var stream = new FileStream(path, FileMode.Create);
+
+                        newProduct.Image.CopyTo(stream);
+                       
+                        product.ImagePath = randomImageName;
+                    }
+                   
+
                     //veri tabanına ekleme
                     //Mapleme ile 
-                    _context.Products.Add(_mapper.Map<Product>(newProduct));
+                    _context.Products.Add(product);
                     //veri tabanına kaydetme
                     _context.SaveChanges();
                     //Mesaj ile kullanıcı bilgilendirme
@@ -177,11 +184,43 @@ namespace MyAspNetCoreApp.Web.Controllers
 				catch(Exception) {
 					//hata olursa
 					ModelState.AddModelError(string.Empty,"Ürün Kaydedirken hata meydana geldi");
+                    ViewBag.Expire = new Dictionary<string, int>()
+            {
+                {"1Ay",1 },
+                {"3Ay",3 },
+                {"6Ay",6 },
+                {"12Ay",12 }
+            };
+                    //dropdown ile listeleme işlemi
+
+                    ViewBag.ColorSelect = new SelectList(new List<ColorSelectList>()
+            {
+                new(){Data="Mavi",Value="Mavi"},
+                new(){Data="Kırmızı",Value="Kırmızı"},
+                new(){Data="Sarı",Value="Sarı"}
+				//value göster sonra dataları
+			}, "Value", "Data");
                     return View();
                 }
             
             }
 			else {
+                ViewBag.Expire = new Dictionary<string, int>()
+            {
+                {"1Ay",1 },
+                {"3Ay",3 },
+                {"6Ay",6 },
+                {"12Ay",12 }
+            };
+                //dropdown ile listeleme işlemi
+
+                ViewBag.ColorSelect = new SelectList(new List<ColorSelectList>()
+            {
+                new(){Data="Mavi",Value="Mavi"},
+                new(){Data="Kırmızı",Value="Kırmızı"},
+                new(){Data="Sarı",Value="Sarı"}
+				//value göster sonra dataları
+			}, "Value", "Data");
                 return View();
 			}
 
@@ -218,11 +257,11 @@ namespace MyAspNetCoreApp.Web.Controllers
 
 
             //prdoucta yolla
-            return View(_mapper.Map<ProductViewModel>(product));
+            return View(_mapper.Map<ProductUpdateViewModel>(product));
 		}
         //Veri Günceleme
         [HttpPost]
-		public IActionResult Update(ProductViewModel updateProduct)
+		public IActionResult Update(ProductUpdateViewModel updateProduct)
 		{
             if(!ModelState.IsValid)
             {
@@ -253,6 +292,30 @@ namespace MyAspNetCoreApp.Web.Controllers
 
                 return View();
             }
+
+            if (updateProduct.Image != null && updateProduct.Image.Length > 0)
+            {
+                var root = _fileProvider.GetDirectoryContents("wwwroot");
+                var images = root.First(x => x.Name == "images");
+
+                var randomImageName = Guid.NewGuid() + Path.GetExtension(updateProduct.Image.FileName);
+
+                var path = Path.Combine(images.PhysicalPath, randomImageName);
+
+                using var stream = new FileStream(path, FileMode.Create);
+
+                updateProduct.Image.CopyTo(stream);
+
+                updateProduct.ImagePath = randomImageName;
+            }
+
+
+
+
+
+
+
+
             //veri tabanına güncelleme
             _context.Products.Update(_mapper.Map<Product>(updateProduct));
             //veri tabanına kaydetme

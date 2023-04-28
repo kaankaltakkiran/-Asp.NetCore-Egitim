@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
@@ -17,6 +18,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     //Appsettingsjon a git ConnectionString deki SqlConu oku
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));
 });
+//File Upload
+builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
 
 //Programa Interface görünce ne yapcaðýný söyleme
 builder.Services.AddTransient<IHelper, Helper>();

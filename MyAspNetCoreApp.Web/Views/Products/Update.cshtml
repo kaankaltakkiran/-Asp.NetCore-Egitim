@@ -4,13 +4,24 @@
 }
 
 @*tip kontorüleri(asp-for)*@
-@model ProductViewModel
+@model ProductUpdateViewModel
 <h1>Ürün Güncelleme</h1>
 
 @*Kulanıcıdan veri alma*@
-<form asp-controller="Products" asp-action="update" method="post">
+<form asp-controller="Products" asp-action="update" method="post" enctype="multipart/form-data">
 
     <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ImagePath" />
+    <div>
+        @if (!String.IsNullOrEmpty(Model.ImagePath))
+        {
+            <img style="width:100px; height:100px" src="/images/@(Model.ImagePath)" />
+        }
+        else
+        {
+            <img style="width:100px; height:100px" src="/images/noImage.jpg" />
+        }
+    </div>
 
     <div class="mb-3">
         @*aspfor yazıya tıklayınca da seçilme işlemini yapıyor*@
@@ -72,6 +83,11 @@
         <label asp-for="PublishDate" class="form-label">Date</label>
         <input class="form-control" asp-for="PublishDate">
         <span class="text-danger" asp-validation-for="PublishDate"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Ürün Resim</label>
+        <input class="form-control" type="file" id="formFile" asp-for="Image">
     </div>
 
     <button type="submit" class="btn btn-primary">Ürün Güncelleme</button>

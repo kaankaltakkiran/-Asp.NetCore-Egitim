@@ -9,7 +9,7 @@
 <div asp-validation-summary="ModelOnly"></div>
 
 @*Kulanıcıdan veri alma*@
-<form asp-controller="Products" asp-action="Add" method="post">
+<form asp-controller="Products" asp-action="Add" method="post" enctype="multipart/form-data">
 
      <div class="mb-3">
          @*aspfor yazıya tıklayınca da seçilme işlemini yapıyor*@
@@ -79,6 +79,11 @@
         <input class="form-control" asp-for="PublishDate">
         @* Hata mesajı*@
         <span class="text-danger" asp-validation-for="PublishDate"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Ürün Resim</label>
+        <input class="form-control" type="file" id="formFile" asp-for="Image">
     </div>
  
     @* Hata mesajı*@
