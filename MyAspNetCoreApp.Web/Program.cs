@@ -37,6 +37,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+//Uselar bir katmandýr.Middleware 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
