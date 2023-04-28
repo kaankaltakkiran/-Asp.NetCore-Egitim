@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyAspNetCoreApp.Web.Filters;
 
 namespace MyAspNetCoreApp.Web.Controllers
 {
@@ -10,6 +11,8 @@ namespace MyAspNetCoreApp.Web.Controllers
     }
     public class OrnekController : Controller
     {
+
+        [CustomResultFilter("x-version","1.0")]
         public IActionResult Index()
         {
             //Model İle Veri Taşıma
