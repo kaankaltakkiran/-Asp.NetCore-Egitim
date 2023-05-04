@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Scripts{
+    <script type="text/javascript">
+    $(document).ready(function(){
+            function loadcomment() {
+
+                $("#loading").show();
+
+                $.ajax({
+                    type: "Get",
+                    url: "/VisitorAjax/VisitorCommentList",
+                    success: function (data) {
+                        console.log(data);
+                        $("#comments").html("");
+                        $.each(data, function (index, item) {
+                            let comment = `<div class="card mt-4">
+                        <div class="card-body">
+                                    <h5 class="card-title">${item.name}</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">${item.date}</h6>
+                                    <p class="card-text">${item.comment}</p>
+                        </div>
+                    </div>`;
+
+                            $("#comments").append(comment);
+
+                           
+
+                        });
+                        $("#loading").hide();
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                });
+            }
+            loadcomment();
+            $("#btnSave").click(function () {
+          
+                var name = $("#Name").val();
+                var comment = $("#Comment").val();
+
+                var jsonData = { "name": name, "comment": comment };
+                $.ajax({
+                    type:"Post",
+                    url: "/VisitorAjax/SaveVisitorComment",
+                    data:jsonData,
+                    success:function(data){
+                        alert("Yorum Kaydedildi");
+                        loadcomment();
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                });
+        });
+    });    
+    </script>
+}
+
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+    <input class="form-control" id="Name" name="Name">
+    </div>
+    <div class="form-floating mb-3">
+    <textarea id="Comment" name="Comment" class="form-control" placeholder="Write Comment"></textarea>
+        <label for="Comment">Write Comment</label>
+    </div>
+
+    <button type="submit" id="btnSave" class="btn btn-primary">Save</button>
+
+<div id="loading">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+
+<div id="comments">
+ 
+</div>
+
