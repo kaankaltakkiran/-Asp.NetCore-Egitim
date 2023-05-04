@@ -19,5 +19,12 @@
 
        public string? ImagePath { get; set; }
 
+		//Key Value
+		public int CategoryId {get; set; }
+
+        //1 ilişki (1-n n si)
+		//1 category çok ürün
+        public Category Category { get; set; }
+
     }
 }

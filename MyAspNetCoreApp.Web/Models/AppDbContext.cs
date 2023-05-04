@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyAspNetCoreApp.Web.Models;
 
 namespace MyAspNetCoreApp.Web.Models
 {
@@ -15,6 +16,8 @@ namespace MyAspNetCoreApp.Web.Models
         public DbSet<Product> Products { get; set; }
         //Visitor için dbset
         public DbSet<Visitor> Visitor { get; set; }
+        //Visitor için dbset
+        public DbSet<MyAspNetCoreApp.Web.Models.Category>? Category { get; set; }
       
     }
 }
