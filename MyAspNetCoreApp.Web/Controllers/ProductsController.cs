@@ -9,6 +9,7 @@ using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
 using MyAspNetCoreApp.Web.ViewModels;
+using System.Collections.Generic;
 
 namespace MyAspNetCoreApp.Web.Controllers
 {
@@ -64,15 +65,31 @@ namespace MyAspNetCoreApp.Web.Controllers
         //[CacheResourceFilter]
 		public IActionResult Index()
 		{
-			
-			
-			//Veritabınından tüm produsctsları getir
-			//Context üzerinden
-			var products = _context.Products.ToList();
+            //category alma
+            List<ProductViewModel> products = _context.Products.Include(x => x.Category).Select(x => new ProductViewModel()
+            {
+                //x=prodcut
+                Id= x.Id,
+                Name= x.Name,
+                Price= x.Price,
+                Stock= x.Stock,
+                CategoryName=x.Category.Name,
+                Description= x.Description,
+                Expire= x.Expire,
+                ImagePath=x.ImagePath,
+                IsPublish=x.IsPublish,
+                PublishDate=x.PublishDate
 
-			//Mapledik
-			return View(_mapper.Map<List<ProductViewModel>>(products));
-		}
+            }).ToList();
+
+            //Veritabınından tüm produsctsları getir
+            //Context üzerinden
+            //var products = _context.Products.ToList();
+
+            //Mapledik
+            //return View(_mapper.Map<List<ProductViewModel>>(products));
+            return View(products);
+        }
         [Route("[controller]/[action]/{page}/{pageSize}",Name = "productpage")]
         //action=Pages
         public IActionResult Pages(int page,int pageSize)
@@ -128,6 +145,11 @@ namespace MyAspNetCoreApp.Web.Controllers
 				new(){Data="Sarı",Value="Sarı"}
 				//value göster sonra dataları
 			}, "Value", "Data");
+            //Category Dropdwonlist
+            var categories=_context.Category.ToList();
+            //İd tutup Name gözükcek
+            ViewBag.categorySelect=new SelectList(categories,"Id","Name");
+
 			
 
 		return View();
@@ -204,7 +226,13 @@ namespace MyAspNetCoreApp.Web.Controllers
                 }
             
             }
+
 			else {
+                //Category Dropdwonlist
+                var categories = _context.Category.ToList();
+                //İd tutup Name gözükcek
+                ViewBag.categorySelect = new SelectList(categories, "Id", "Name");
+
                 ViewBag.Expire = new Dictionary<string, int>()
             {
                 {"1Ay",1 },
@@ -231,11 +259,16 @@ namespace MyAspNetCoreApp.Web.Controllers
 
 			//İdleri bul ve product a getir
 			var product= _context.Products.Find(id);
+            //Category Dropdwonlist
+            var categories = _context.Category.ToList();
+            //İd tutup Name gözükcek
+            ViewBag.categorySelect = new SelectList(categories, "Id", "Name",product.CategoryId);
 
-			//radio ile ürün süresi
 
-			//Seçilen Değeri alma
-			ViewBag.ExpireValue = product.Expire;
+            //radio ile ürün süresi
+
+            //Seçilen Değeri alma
+            ViewBag.ExpireValue = product.Expire;
 
             ViewBag.Expire = new Dictionary<string, int>()
             {
@@ -289,6 +322,11 @@ namespace MyAspNetCoreApp.Web.Controllers
                 new(){Data="Sarı",Value="Sarı"}
 				//value göster sonra dataları
 			}, "Value", "Data", updateProduct.Color);
+
+                //Category Dropdwonlist
+                var categories = _context.Category.ToList();
+                //İd tutup Name gözükcek
+                ViewBag.categorySelect = new SelectList(categories, "Id", "Name",updateProduct.CategoryId);
 
                 return View();
             }
